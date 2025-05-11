@@ -1,0 +1,1349 @@
+﻿@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Assistant</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to bottom, white, #f9fafb);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2.5rem 1rem;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+            .header h1 {
+                font-size: 2.5rem;
+                font-weight: bold;
+                margin-bottom: 0.5rem;
+            }
+
+        #welcome-message {
+            font-size: 1.25rem;
+            color: #4b5563;
+        }
+
+        /* Button Group */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        @@media (min-width: 640px) {
+            .btn-group {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: #9333ea;
+            color: white;
+        }
+
+            .btn-primary:hover {
+                background-color: #7e22ce;
+            }
+
+        .btn-secondary {
+            background-color: white;
+            color: #1f2937;
+            border: 1px solid #d1d5db;
+        }
+
+            .btn-secondary:hover {
+                background-color: #f3f4f6;
+            }
+
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        @@media (min-width: 768px) {
+            .features {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .feature-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f3f4f6;
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+            .feature-header svg {
+                color: #9333ea;
+            }
+
+            .feature-header h3 {
+                font-size: 1.125rem;
+                font-weight: 600;
+            }
+
+        .feature-card p {
+            color: #4b5563;
+        }
+
+        /* Chat Button and Container */
+        .chat-button-container {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 5000;
+            transition: all 0.3s;
+        }
+
+        .chat-label {
+            background-color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: 500;
+            color: #4b5563;
+            border: 1px solid #e5e7eb;
+        }
+
+        .chat-button {
+            background-color: #9333ea;
+            color: white;
+            width: 3.5rem;
+            height: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+            .chat-button:hover {
+                background-color: #7e22ce;
+            }
+
+        /* Chat Window */
+        .chat-window {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 360px;
+            max-width: 95vw;
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+            z-index: 50;
+            overflow: hidden;
+            max-height: 600px;
+            height: 80vh;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #9333ea;
+            color: white;
+            padding: 0.75rem 1rem;
+        }
+
+        .chat-header-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .chat-close-btn {
+            color: white;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+            .chat-close-btn:hover {
+                color: #e5e7eb;
+            }
+
+        .online-indicator {
+            width: 0.5rem;
+            height: 0.5rem;
+            background-color: #34d399;
+            border-radius: 9999px;
+        }
+
+        /* Login View */
+        .login-container {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .form-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4b5563;
+        }
+
+        .form-input {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+            .form-input:focus {
+                border-color: #9333ea;
+                box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.2);
+            }
+
+        .login-button {
+            width: 100%;
+            background-color: #9333ea;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.2s;
+        }
+
+            .login-button:hover {
+                background-color: #7e22ce;
+            }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        /* Chat View */
+        .user-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background-color: #f3f4f6;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-info-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .user-info-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .logout-button {
+            font-size: 0.875rem;
+            color: #4b5563;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+            .logout-button:hover {
+                color: #1f2937;
+            }
+
+        .chat-nav {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            background-color: #f9fafb;
+        }
+
+        .chat-nav-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+            .chat-nav-item:hover {
+                background-color: #f3f4f6;
+            }
+
+            .chat-nav-item.active {
+                color: #9333ea;
+                border-bottom-color: #9333ea;
+                font-weight: 500;
+            }
+
+            .chat-nav-item svg {
+                margin-right: 0.25rem;
+            }
+
+        .quick-actions {
+            padding: 0.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .quick-actions-title {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+            padding: 0 0.25rem;
+        }
+
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .quick-action-button {
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.25rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            text-align: left;
+            color: #4b5563;
+            cursor: pointer;
+        }
+
+            .quick-action-button:hover {
+                background-color: #f9fafb;
+            }
+
+        .chat-messages {
+            flex: 1;
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            overflow-y: auto;
+            max-height: calc(80vh - 300px);
+        }
+
+        .chat-message {
+            display: flex;
+            flex-direction: column;
+            max-width: 85%;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            position: relative;
+        }
+
+            .chat-message.assistant {
+                background-color: #f3f4f6;
+                color: #1f2937;
+                align-self: flex-start;
+                border-top-right-radius: 0.5rem;
+                border-bottom-right-radius: 0.5rem;
+                border-bottom-left-radius: 0.5rem;
+            }
+
+            .chat-message.user {
+                background-color: #9333ea;
+                color: white;
+                align-self: flex-end;
+                border-top-left-radius: 0.5rem;
+                border-bottom-left-radius: 0.5rem;
+                border-bottom-right-radius: 0.5rem;
+            }
+
+        .chat-message-text {
+            white-space: pre-line;
+        }
+
+        .chat-message-time {
+            font-size: 0.625rem;
+            opacity: 0.7;
+            align-self: flex-end;
+            margin-top: 0.25rem;
+        }
+
+        .chat-input-container {
+            padding: 0.2rem;
+            position: fixed;
+            top: 578px;
+            width: 32%;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .chat-input-box {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: #f3f4f6;
+            border-radius: 9999px;
+            padding: 0.5rem 1rem;
+        }
+
+        .chat-input {
+            background-color: transparent;
+            border: none;
+            flex: 1;
+            outline: none;
+            color: #1f2937;
+            font-size: 0.875rem;
+        }
+
+        .chat-send-button {
+            color: #9333ea;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+            .chat-send-button:hover {
+                color: #7e22ce;
+            }
+
+        /* Verification Modal */
+        .verification-modal {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            padding: 1rem;
+        }
+
+        .verification-container {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            max-width: 28rem;
+            overflow: hidden;
+        }
+
+        .verification-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .verification-title {
+            font-size: 1.125rem;
+            font-weight: bold;
+        }
+
+        .verification-close {
+            color: #6b7280;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+            .verification-close:hover {
+                color: #1f2937;
+            }
+
+        .verification-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .otp-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .otp-input {
+            width: 2.5rem;
+            height: 3rem;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+            .otp-input:focus {
+                border-color: #9333ea;
+                box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.2);
+            }
+
+        .verification-button {
+            width: 100%;
+            background-color: #9333ea;
+            color: white;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+            .verification-button:hover {
+                background-color: #7e22ce;
+            }
+
+        .verification-feedback {
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+        }
+
+        .success-message {
+            color: #059669;
+        }
+
+        .error-message {
+            color: #dc2626;
+        }
+
+        .resend-code {
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .resend-link {
+            color: #9333ea;
+            cursor: pointer;
+        }
+
+            .resend-link:hover {
+                color: #7e22ce;
+            }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive adjustments */
+        @@media screen and (min-width: 1200px) {
+            .chat-input-container {
+                width: 25%;
+            }
+        }
+
+        @@media screen and (max-width: 1199px) {
+            .chat-input-container {
+                width: 36%;
+            }
+        }
+
+        @@media screen and (max-width: 768px) {
+            .chat-input-container {
+                width: 50%;
+            }
+        }
+
+        @@media screen and (max-width: 480px) {
+            .chat-input-container {
+                width: 90%;
+                top: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+ 
+    <!-- Main Container -->
+    <div class="container animate-fade-in">
+        <div class="header" style="display:none;">
+            <h1>University Management Assistant</h1>
+            <p id="welcome-message">Your personal guide to academic information, admission details, campus resources, and more.</p>
+        </div>
+
+        <div class="btn-group" style="display:none;">
+            <button id="open-assistant-btn" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                    <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5" />
+                </svg>
+                Open University Assistant
+            </button>
+
+            <button id="verification-btn" class="btn btn-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 13c0 5-4.5 8-8 8s-8-3-8-8V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2Z" />
+                    <path d="m9 12 2 2 4-4" />
+                </svg>
+                Verify Account
+            </button>
+        </div>
+
+        <div class="features" style="display:none;">
+            <div class="feature-card">
+                <div class="feature-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                    </svg>
+                    <h3>Academic Resources</h3>
+                </div>
+                <p>Access class schedules, view grades, course registration, and exam information with ease.</p>
+            </div>
+
+            <div class="feature-card" style="display:none;">
+                <div class="feature-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m4 6 8-4 8 4" />
+                        <path d="m18 10 4 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8l4-2" />
+                        <path d="M14 22v-4a2 2 0 0 0-4 0v4" />
+                        <path d="M18 5v17" />
+                        <path d="M6 5v17" />
+                        <circle cx="12" cy="9" r="2" />
+                    </svg>
+                    <h3>Admissions Support</h3>
+                </div>
+                <p>Get information about applications, requirements, financial aid, and important deadlines.</p>
+            </div>
+
+            <div class="feature-card" style="display:none;">
+                <div class="feature-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                    <h3>Campus Life</h3>
+                </div>
+                <p>Discover campus facilities, upcoming events, student housing options, and more.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chat Button -->
+    <div id="chat-button-container" class="chat-button-container">
+        <div class="chat-label">University Assistant</div>
+        <button id="chat-button" class="chat-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Chat Window -->
+    <div id="chat-window" class="chat-window hidden">
+        <div class="chat-header">
+            <div class="chat-header-title">
+                <div class="online-indicator"></div>
+                University Assistant
+            </div>
+            <button id="close-chat" class="chat-close-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Login View -->
+        <div id="login-view">
+            <div class="login-container">
+                <h2 class="login-title">Login to Chat</h2>
+                <div id="login-error" class="error-message hidden"></div>
+                <form id="login-form" class="login-form">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="login-button">Login</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Chat View (initially hidden) -->
+        <div id="chat-view" class="hidden">
+            <!-- User info bar with logout button -->
+            <div class="user-bar">
+                <div class="user-info">
+                    <span class="user-info-label">Logged in as</span>
+                    <span id="user-name" class="user-info-name"></span>
+                </div>
+                <button id="logout-button" class="logout-button">Sign out</button>
+            </div>
+
+            <div class="chat-nav">
+                <div class="chat-nav-item active" data-tab="all">All</div>
+                <div class="chat-nav-item" data-tab="academics">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
+                    Academics
+                </div>
+                <div class="chat-nav-item" data-tab="admissions">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                    </svg>
+                    Admissions
+                </div>
+                <div class="chat-nav-item" data-tab="campus">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    Campus
+                </div>
+            </div>
+
+            <div id="quick-actions" class="quick-actions">
+                <div class="quick-actions-title">QUICK ACTIONS</div>
+                <div class="quick-actions-grid" id="quick-actions-grid">
+                    <!-- Quick action buttons will be loaded here -->
+                </div>
+            </div>
+
+            <div id="chat-messages" class="chat-messages">
+                <!-- Messages will be added here -->
+            </div>
+
+            <div class="chat-input-container">
+                <div class="chat-input-box">
+                    <input id="chat-input" class="chat-input" type="text" placeholder="Type your message...">
+                    <button id="send-message" class="chat-send-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m22 2-7 20-4-9-9-4Z" />
+                            <path d="M22 2 11 13" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Verification Modal -->
+    <div id="verification-modal" class="verification-modal hidden">
+        <div class="verification-container">
+            <div class="verification-header">
+                <h3 class="verification-title">Verify Your Account</h3>
+                <button id="close-verification" class="verification-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="verification-body">
+                <p class="text-center">Enter the 6-digit code sent to your email address</p>
+
+                <div class="otp-container">
+                    <input type="text" maxlength="1" class="otp-input" data-index="0">
+                    <input type="text" maxlength="1" class="otp-input" data-index="1">
+                    <input type="text" maxlength="1" class="otp-input" data-index="2">
+                    <input type="text" maxlength="1" class="otp-input" data-index="3">
+                    <input type="text" maxlength="1" class="otp-input" data-index="4">
+                    <input type="text" maxlength="1" class="otp-input" data-index="5">
+                </div>
+
+                <div id="verification-message" class="verification-feedback hidden"></div>
+
+                <button id="verify-button" class="verification-button">Verify</button>
+
+                <p class="resend-code">
+                    Didn't receive a code? <span id="resend-code" class="resend-link">Resend</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements - Main UI
+            const chatButtonContainer = document.getElementById('chat-button-container');
+            const chatButton = document.getElementById('chat-button');
+            const chatWindow = document.getElementById('chat-window');
+            const closeChat = document.getElementById('close-chat');
+            const loginView = document.getElementById('login-view');
+            const chatView = document.getElementById('chat-view');
+            const loginForm = document.getElementById('login-form');
+            const loginError = document.getElementById('login-error');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const userName = document.getElementById('user-name');
+            const logoutButton = document.getElementById('logout-button');
+            const chatInput = document.getElementById('chat-input');
+            const sendMessage = document.getElementById('send-message');
+            const chatMessages = document.getElementById('chat-messages');
+            const navItems = document.querySelectorAll('.chat-nav-item');
+            const quickActionsGrid = document.getElementById('quick-actions-grid');
+            const openAssistantBtn = document.getElementById('open-assistant-btn');
+            const welcomeMessage = document.getElementById('welcome-message');
+
+            // DOM Elements - Verification
+            const verificationBtn = document.getElementById('verification-btn');
+            const verificationModal = document.getElementById('verification-modal');
+            const closeVerification = document.getElementById('close-verification');
+            const verifyButton = document.getElementById('verify-button');
+            const otpInputs = document.querySelectorAll('.otp-input');
+            const resendCodeBtn = document.getElementById('resend-code');
+            const verificationMessage = document.getElementById('verification-message');
+
+            // Current tab and user state
+            let currentTab = 'all';
+            let isAuthenticated = false;
+            let currentUser = null;
+            let isVerified = false;
+
+            // Check if user is already logged in (from localStorage)
+            function checkAuth() {
+                const savedUser = localStorage.getItem('university_assistant_user');
+                if (savedUser) {
+                    currentUser = JSON.parse(savedUser);
+                    isAuthenticated = true;
+
+                    // Check if verified
+                    isVerified = localStorage.getItem('university_assistant_verified') === 'true';
+
+                    // Update UI
+                    updateWelcomeMessage();
+                }
+            }
+
+            // Update welcome message based on authentication state
+            function updateWelcomeMessage() {
+                if (isAuthenticated && currentUser) {
+                    let message = `Your personal guide to academic information, admission details, campus resources, and more. Welcome back, ${currentUser.name}!`;
+                    if (isVerified) {
+                        message += ' (Verified)';
+                    }
+                    welcomeMessage.textContent = message;
+                } else {
+                    welcomeMessage.textContent = 'Your personal guide to academic information, admission details, campus resources, and more.';
+                }
+            }
+
+            // Toggle chat window
+            function toggleChatWindow() {
+                chatButtonContainer.classList.toggle('hidden');
+                chatWindow.classList.toggle('hidden');
+
+                if (!chatWindow.classList.contains('hidden')) {
+                    if (isAuthenticated) {
+                        showChatView();
+                    } else {
+                        showLoginView();
+                    }
+                }
+            }
+
+            // Show login view
+            function showLoginView() {
+                loginView.classList.remove('hidden');
+                chatView.classList.add('hidden');
+                emailInput.focus();
+            }
+
+            // Show chat view
+            function showChatView() {
+                loginView.classList.add('hidden');
+                chatView.classList.remove('hidden');
+                loadQuickActions(currentTab);
+
+                // Update user name in UI
+                userName.textContent = currentUser.name;
+                if (isVerified) {
+                    userName.textContent += ' (Verified)';
+                }
+
+                // Add welcome message if there are no messages
+                if (chatMessages.children.length === 0) {
+                    addMessage(`Hello ${currentUser.name}! I'm your university management assistant. How can I help you today?`, false);
+                }
+
+                // Focus the chat input and scroll messages to bottom
+                chatInput.focus();
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Format time for messages
+            function formatTime(date) {
+                return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+            }
+
+            // Handle login submission
+            function handleLogin(e) {
+                e.preventDefault();
+
+                const email = emailInput.value.trim();
+                const password = passwordInput.value.trim();
+
+                if (!email || !password) {
+                    showError("Please enter both email and password");
+                    return;
+                }
+
+                // Perform AJAX login
+                $.ajax({
+                    url: '/api/auth/login',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ email, password }),
+                    dataType: 'json',
+                    success: function(data) {
+                        currentUser = { email, name: data.name || email.split('@@')[0] };
+                        isAuthenticated = true;
+                        localStorage.setItem('university_assistant_user', JSON.stringify(currentUser));
+                        updateWelcomeMessage();
+                        loginForm.reset();
+                        loginError.classList.add('hidden');
+                        showChatView();
+                    },
+                    error: function(e) {
+                        showError("Invalid email or password");
+                    }
+                });
+            }
+
+            // Show login error
+            function showError(message) {
+                loginError.textContent = message;
+                loginError.classList.remove('hidden');
+
+                // Hide after 3 seconds
+                setTimeout(() => {
+                    loginError.classList.add('hidden');
+                }, 3000);
+            }
+
+            // Handle logout
+            function handleLogout() {
+                localStorage.removeItem('university_assistant_user');
+                localStorage.removeItem('university_assistant_verified');
+                isAuthenticated = false;
+                isVerified = false;
+                currentUser = null;
+
+                // Clear chat messages
+                chatMessages.innerHTML = '';
+
+                // Update welcome message
+                updateWelcomeMessage();
+
+                // Show login view
+                showLoginView();
+            }
+
+            // Add a message to the chat
+            function addMessage(content, isUser) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `chat-message ${isUser ? 'user' : 'assistant'}`;
+                messageDiv.innerHTML = `
+                    <div class="chat-message-text">${content}</div>
+                    <div class="chat-message-time">${formatTime(new Date())}</div>
+                `;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Load quick actions for the current tab
+            function loadQuickActions(tab) {
+                quickActionsGrid.innerHTML = '';
+                const quickActions = {
+                    'all': [
+                        { id: 'class-schedule', label: 'Class Schedule' },
+                        { id: 'view-grades', label: 'View Grades' },
+                        { id: 'course-registration', label: 'Course Registration' },
+                        { id: 'exam-schedule', label: 'Exam Schedule' }
+                    ],
+                    'academics': [
+                        { id: 'class-schedule', label: 'Class Schedule' },
+                        { id: 'view-grades', label: 'View Grades' },
+                        { id: 'course-registration', label: 'Course Registration' },
+                        { id: 'exam-schedule', label: 'Exam Schedule' }
+                    ],
+                    'admissions': [
+                        { id: 'application-status', label: 'Application Status' },
+                        { id: 'admission-requirements', label: 'Admission Requirements' },
+                        { id: 'financial-aid', label: 'Financial Aid' },
+                        { id: 'application-deadlines', label: 'Application Deadlines' }
+                    ],
+                    'campus': [
+                        { id: 'campus-map', label: 'Campus Map' },
+                        { id: 'housing', label: 'Housing Options' },
+                        { id: 'events', label: 'Upcoming Events' },
+                        { id: 'facilities', label: 'Campus Facilities' }
+                    ]
+                };
+
+                if (quickActions[tab]) {
+                    quickActions[tab].forEach(action => {
+                        const button = document.createElement('button');
+                        button.className = 'quick-action-button';
+                        button.dataset.action = action.id;
+                        button.textContent = action.label;
+                        button.addEventListener('click', () => handleQuickAction(action.id));
+                        quickActionsGrid.appendChild(button);
+                    });
+                }
+            }
+
+            // Handle quick action button clicks
+            function handleQuickAction(actionId) {
+                const actionMessages = {
+                    'class-schedule': 'Show my class schedule',
+                    'view-grades': 'View my grades',
+                    'course-registration': 'Course registration details',
+                    'exam-schedule': 'Show my exam schedule',
+                    'application-status': 'Check my application status',
+                    'admission-requirements': 'Admission requirements',
+                    'financial-aid': 'Financial aid information',
+                    'application-deadlines': 'Application deadlines',
+                    'campus-map': 'Show campus map',
+                    'housing': 'Housing options',
+                    'events': 'Upcoming events',
+                    'facilities': 'Campus facilities'
+                };
+
+                const message = actionMessages[actionId] || actionId.replace(/-/g, ' ');
+                addMessage(message, true);
+
+                $.ajax({
+                    url: '/api/chat',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ message: message, userId: currentUser?.email || null }),
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log("Received Data:", data);
+                        addMessage(data.response, false);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    },
+                    error: function(e) {
+                        console.error("Error fetching response:", e);
+                        addMessage("Sorry, something went wrong.", false);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }
+                });
+            }
+
+            // Send a user message
+            function sendUserMessage() {
+                const message = chatInput.value.trim();
+                if (!message) return;
+
+                addMessage(message, true);
+                chatInput.value = '';
+
+                $.ajax({
+                    url: '/api/chat',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ message: message, userId: currentUser?.email || null }),
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log("Received Data:", data);
+                        addMessage(data.response, false);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    },
+                    error: function(e) {
+                        console.error("Error fetching response:", e);
+                        addMessage("Sorry, something went wrong.", false);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }
+                });
+            }
+
+            // Verification handling
+            function setupVerification() {
+                otpInputs.forEach((input, index) => {
+                    input.addEventListener('input', function(e) {
+                        this.value = this.value.replace(/[^0-9]/g, '');
+                        if (this.value.length === 1 && index < otpInputs.length - 1) {
+                            otpInputs[index + 1].focus();
+                        }
+                    });
+
+                    input.addEventListener('keydown', function(e) {
+                        if (e.key === 'Backspace' && !this.value && index > 0) {
+                            otpInputs[index - 1].focus();
+                        }
+                    });
+                });
+
+                document.querySelector('.otp-container').addEventListener('paste', function(e) {
+                    e.preventDefault();
+                    const pastedData = e.clipboardData.getData('text');
+                    if (/^\d+$/.test(pastedData)) {
+                        const digits = pastedData.slice(0, 6).split('');
+                        otpInputs.forEach((input, index) => {
+                            if (index < digits.length) {
+                                input.value = digits[index];
+                            }
+                        });
+                        if (digits.length < 6) {
+                            otpInputs[Math.min(digits.length, 5)].focus();
+                        }
+                    }
+                });
+
+                function resetVerificationUI() {
+                    otpInputs.forEach(input => {
+                        input.value = '';
+                        input.style.borderColor = '';
+                    });
+                    verificationMessage.classList.add('hidden');
+                    verificationMessage.textContent = '';
+                    verificationMessage.classList.remove('success-message', 'error-message');
+                }
+
+                function getOtpCode() {
+                    return Array.from(otpInputs).map(input => input.value).join('');
+                }
+
+                function verifyOtp(code) {
+                    return new Promise((resolve) => {
+                        $.ajax({
+                            url: '/api/auth/verify',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ email: currentUser.email, code }),
+                            dataType: 'json',
+                            success: function(data) {
+                                resolve(data.isValid);
+                            },
+                            error: function() {
+                                resolve(false);
+                            }
+                        });
+                    });
+                }
+
+                verifyButton.addEventListener('click', async function() {
+                    const otpCode = getOtpCode();
+                    const isValid = await verifyOtp(otpCode);
+
+                    if (isValid) {
+                        verificationMessage.textContent = 'Verification successful!';
+                        verificationMessage.classList.remove('error-message', 'hidden');
+                        verificationMessage.classList.add('success-message');
+                        otpInputs.forEach(input => {
+                            input.style.borderColor = '#10b981';
+                        });
+
+                        isVerified = true;
+                        localStorage.setItem('university_assistant_verified', 'true');
+                        updateWelcomeMessage();
+                        if (isAuthenticated && userName) {
+                            userName.textContent = currentUser.name + ' (Verified)';
+                        }
+
+                        setTimeout(() => {
+                            verificationModal.classList.add('hidden');
+                            resetVerificationUI();
+                        }, 1500);
+                    } else {
+                        verificationMessage.textContent = 'Please enter a valid 6-digit code.';
+                        verificationMessage.classList.remove('success-message', 'hidden');
+                        verificationMessage.classList.add('error-message');
+                        otpInputs.forEach(input => {
+                            if (!input.value) {
+                                input.style.borderColor = '#ef4444';
+                            }
+                        });
+                    }
+                });
+
+                resendCodeBtn.addEventListener('click', function() {
+                    $.ajax({
+                        url: '/api/auth/resend-otp',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ email: currentUser.email }),
+                        success: function() {
+                            verificationMessage.textContent = 'A new verification code has been sent to your email.';
+                            verificationMessage.classList.remove('error-message', 'hidden');
+                            verificationMessage.classList.add('success-message');
+                            setTimeout(() => {
+                                verificationMessage.classList.add('hidden');
+                            }, 3000);
+                        },
+                        error: function() {
+                            verificationMessage.textContent = 'Failed to resend code. Please try again.';
+                            verificationMessage.classList.remove('success-message', 'hidden');
+                            verificationMessage.classList.add('error-message');
+                        }
+                    });
+                });
+
+                closeVerification.addEventListener('click', function() {
+                    verificationModal.classList.add('hidden');
+                    resetVerificationUI();
+                });
+            }
+
+            // Event Listeners
+            chatButton.addEventListener('click', toggleChatWindow);
+            closeChat.addEventListener('click', toggleChatWindow);
+            loginForm.addEventListener('submit', handleLogin);
+            logoutButton.addEventListener('click', handleLogout);
+            sendMessage.addEventListener('click', sendUserMessage);
+            chatInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    sendUserMessage();
+                }
+            });
+
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    navItems.forEach(tab => tab.classList.remove('active'));
+                    item.classList.add('active');
+                    currentTab = item.dataset.tab;
+                    loadQuickActions(currentTab);
+                });
+            });
+
+            openAssistantBtn.addEventListener('click', function() {
+                if (isAuthenticated) {
+                    chatButtonContainer.classList.add('hidden');
+                    chatWindow.classList.remove('hidden');
+                    showChatView();
+                } else {
+                    chatButtonContainer.classList.add('hidden');
+                    chatWindow.classList.remove('hidden');
+                    showLoginView();
+                }
+            });
+
+            verificationBtn.addEventListener('click', function() {
+                if (!isAuthenticated) {
+                    chatButtonContainer.classList.add('hidden');
+                    chatWindow.classList.remove('hidden');
+                    showLoginView();
+                    showError("Please log in before verifying your account");
+                } else if (isVerified) {
+                    alert('Your account is already verified!');
+                } else {
+                    verificationModal.classList.remove('hidden');
+                    otpInputs[0].focus();
+                }
+            });
+
+            // Initialize
+            checkAuth();
+            setupVerification();
+
+            chatMessages.addEventListener('DOMNodeInserted', function() {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            });
+        });
+    </script>
+</body>
+</html>
